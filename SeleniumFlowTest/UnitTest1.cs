@@ -114,7 +114,9 @@ namespace SeleniumFlowTest
             IWebElement carOption = driver.FindElement(By.Id("carTypeDropdown-option-0"));
             carOption.Click();
 
-            NextButton(waitTime);
+            IWebElement okButton1 = driver.FindElement(By.Id("okButton1"));
+            okButton1.Click();
+            Thread.Sleep(waitTime);
 
             IWebElement boligSituation = driver.FindElement(By.Id("lejeboligButton"));
             boligSituation.Click();
@@ -125,8 +127,6 @@ namespace SeleniumFlowTest
             IWebElement coopMedlemNr = driver.FindElement(By.Id("coopMedlemNrInput"));
             coopMedlemNr.SendKeys(coopMedlemNrInput);
 
-            NextButton(waitTime);
-
             IWebElement okToTotalButton = driver.FindElement(By.Id("okButton"));
             okToTotalButton.Click();
             Thread.Sleep(waitTime);
@@ -135,9 +135,9 @@ namespace SeleniumFlowTest
             Assert.AreEqual(brugernavn, totalSplitter("MitId"));
             Assert.AreEqual(navnInput, totalSplitter("name"));
             Assert.AreEqual(emailInput, totalSplitter("mail"));
-            Assert.AreEqual(mobilInput, totalSplitter("phone"));
+            Assert.AreEqual(("+45 " + mobilInput), totalSplitter("phone"));
             Assert.AreEqual(employLocInput, totalSplitter("Employer"));
-            Assert.AreEqual(childAgeInput, totalSplitter("childOne"));
+            Assert.AreEqual((childAgeInput + " år"), totalSplitter("childOne"));
             Assert.AreEqual(coopMedlemNrInput, totalSplitter("CoopMember"));
         }
 
@@ -241,7 +241,7 @@ namespace SeleniumFlowTest
             Assert.AreEqual(brugernavn, totalSplitter("MitId"));
             Assert.AreEqual(navnInput, totalSplitter("name"));
             Assert.AreEqual(emailInput, totalSplitter("mail"));
-            Assert.AreEqual(mobilInput, totalSplitter("phone"));
+            Assert.AreEqual(("+45 " + mobilInput), totalSplitter("phone"));
             Assert.AreEqual(medansøgerMailInput, totalSplitter("CohabitingEmail"));
         }
 
@@ -288,7 +288,7 @@ namespace SeleniumFlowTest
             {
                 IWebElement email = driver.FindElement(By.Id("userEmailInput"));
                 email.SendKeys(VARIABLE);
-                Assert.AreEqual("Email format, ex: andr12f4@zealand.dk", driver.FindElement(By.Id("errorEmailText")).Text);
+                Assert.AreEqual("Email format, ex: Anders@eksempel.dk", driver.FindElement(By.Id("errorEmailText")).Text);
             }
 
             foreach (var VARIABLE in wrongMobilList)
@@ -318,7 +318,7 @@ namespace SeleniumFlowTest
             var splitter = ':';
             var textLine = driver.FindElement(By.Id(id)).Text;
             var textArray = textLine.Split(splitter);
-            return textArray[textArray.GetUpperBound(0)];
+            return textArray[textArray.GetUpperBound(0)].Trim();
         }
     }
 }
